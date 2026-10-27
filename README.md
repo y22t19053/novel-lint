@@ -1,5 +1,7 @@
 # novel-lint
 
+[![ci](https://github.com/y22t19053/novel-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/y22t19053/novel-lint/actions/workflows/ci.yml)
+
 > 中文小说文风自检：机械可判定的交给脚本，需要判断力的交给大模型。
 
 小说「写得不好」大部分时候不是玄学，是能被说清的技术问题：一句话里塞了五个信息点、
