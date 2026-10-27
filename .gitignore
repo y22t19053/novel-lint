@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# 本地跑出来的检查报告（examples 里的 scan.json 是手工保留的）
+*.check.json
+
+.DS_Store
+Thumbs.db

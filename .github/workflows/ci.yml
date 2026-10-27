@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # 示例章节里埋了错，必须扫得出来
+      - name: 示例章节能被扫到
+        run: python writing_scan.py --file examples/chapter.txt --quiet
+
+      # 有命中时退出码必须是 1，不然没法当 hook 用
+      - name: 有命中时退出码为 1
+        run: |
+          set +e
+          python writing_scan.py --file examples/chapter.txt --quiet --fail-on-violations
+          test $? -eq 1
+
+      # 干净文本必须零命中，不然会天天误报
+      - name: 干净文本零命中
+        run: |
+          printf '他推开门，风从走廊里灌进来。\n' > clean.txt
+          python writing_scan.py --file clean.txt --quiet --fail-on-violations
+
+      # 模型层不进 CI（要花钱、结果不稳定），但 CLI 必须能自己走通
+      - name: 模型层 CLI 冒烟
+        run: python writing_check.py --file examples/chapter.txt --dry-run
